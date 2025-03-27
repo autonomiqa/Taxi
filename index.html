@@ -15,7 +15,7 @@
   </style>
 </head>
 <body>
-  <h1>Lista de Carreras 2</h1>
+  <h1>Lista de Carreras 3</h1>
   <table id="carrerasTable">
     <thead>
       <tr>
@@ -91,6 +91,7 @@
     function updateData(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       fetch(API_URL, {
         method: 'POST',
+        mode: cors,
         headers: {
           'Content-Type': 'application/json',
         },
