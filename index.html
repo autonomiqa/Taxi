@@ -22,9 +22,10 @@
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Correo</th>
-        <th>FechaHora</th>
-        <th>InicioHora</th>
-        <th>FinHoras</th>
+        <th>Fecha</th>
+        <th>HoraInicio</th>
+        <th>HoraFin</th>
+        <th>Horas</th>
         <th>Lugares</th>
         <th>Responsable</th>
         <th>Pasajeros</th>
@@ -56,48 +57,44 @@
       data.forEach(row => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${row.ID}</td>
-          <td>${row.Origen}</td>
-          <td>${row.Destino}</td>
-          <td>${row.Estado}</td>
-          <td>${row.Precio}</td>
           <td>${row.Nombre}</td>
           <td>${row.Apellido}</td>
           <td>${row.Correo}</td>
-          <td>${row.FechaHora}</td>
-          <td>${row.InicioHora}</td>
-          <td>${row.FinHoras}</td>
+          <td>${row.Fecha}</td>
+          <td>${row.HoraInicio}</td>
+          <td>${row.HoraFin}</td>
+          <td>${row.Horas}</td>
           <td>${row.Lugares}</td>
           <td>${row.Responsable}</td>
           <td>${row.Pasajeros}</td>
           <td>${row.Precio}</td>
           <td>${row.Conductor}</td>
           <td>${row.Placa}</td>
-           <td>${row.Estado}</td>
+          <td>${row.Estado}</td>
           <td>
-            <button onclick="showUpdateForm(${row.row},'${row.ID}','${row.Origen}','${row.Destino}','${row.Estado}','${row.Precio}','${row.Nombre}','${row.Apellido}','${row.Correo}','${row.FechaHora}','${row.InicioHora}','${row.FinHoras}',${row.Lugares}','${row.Responsable}','${row.Pasajeros}','${row.Precio}','${row.Conductor}','${row.Placa}')">Actualizar</button>            
+            <button onclick="showUpdateForm(${row.row},'${row.Nombre}','${row.Apellido}','${row.Correo}','${row.Fecha}','${row.HoraInicio}','${row.HoraFin}','${row.Horas}',${row.Lugares}','${row.Responsable}','${row.Pasajeros}','${row.Precio}','${row.Conductor}','${row.Placa}','${row.Estado}')">Actualizar</button>            
           </td>
         `;
         tableBody.appendChild(tr);
       });
     }
 
-    function showUpdateForm(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
+    function showUpdateForm(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       const newEstado = prompt('Nuevo estado:', Estado);
       const newPrecio = prompt('Nuevo precio:', Precio);
 
       if (newEstado !== null && newPrecio !== null) {
-        updateData(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, newPrecio, Conductor, Placa, newEstado);
+        updateData(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, newPrecio, Conductor, Placa, newEstado);
       }
     }
 
-    function updateData(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
+    function updateData(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ row: row, Nombre:Nombre, Apellido:Apellido, Correo:Correo, FechaHora:FechaHora, InicioHora:InicioHora, FinHoras:FinHoras, Lugares:Lugares, Responsable:Responsable, Pasajeros:Pasajeros, Precio:Precio, Conductor:Conductor, Placa:Placa, Estado:Estado}),
+        body: JSON.stringify({ row: row, Nombre:Nombre, Apellido:Apellido, Correo:Correo, Fecha:Fecha, HoraInicio:HoraInicio, HoraFin:HoraFin, Horas:Horas, Lugares:Lugares, Responsable:Responsable, Pasajeros:Pasajeros, Precio:Precio, Conductor:Conductor, Placa:Placa, Estado:Estado}),
       })
         .then(response => response.json())
         .then(data => {
