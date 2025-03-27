@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carreras de Taxi</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Carreras</h1>
+  <table id="carrerasTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Estado</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      </tbody>
+  </table>
+
+  <script>
+    const API_URL = 'URL_DE_TU_APLICACION_WEB'; // Reemplaza con la URL de tu API
+
+    function fetchData() {
+      fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+          populateTable(data);
+        });
+    }
+
+    function populateTable(data) {
+      const tableBody = document.querySelector('#carrerasTable tbody');
+      tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.ID}</td>
+          <td>${row.Origen}</td>
+          <td>${row.Destino}</td>
+          <td>${row.Estado}</td>
+          <td>${row.Precio}</td>
+          <td>
+            <button onclick="showUpdateForm(${row.row},'${row.ID}','${row.Origen}','${row.Destino}','${row.Estado}','${row.Precio}')">Actualizar</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function showUpdateForm(row, id, origen, destino, estado, precio) {
+      const newEstado = prompt('Nuevo estado:', estado);
+      const newPrecio = prompt('Nuevo precio:', precio);
+
+      if (newEstado !== null && newPrecio !== null) {
+        updateData(row, id, origen, destino, newEstado, newPrecio);
+      }
+    }
+
+    function updateData(row, id, origen, destino, estado, precio) {
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ row: row, id:id, origen: origen, destino: destino, estado: estado, precio: precio }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          fetchData(); // Recargar los datos después de la actualización
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    fetchData(); // Cargar los datos al cargar la página
+  </script>
+</body>
+</html>
