@@ -19,12 +19,19 @@
   <table id="carrerasTable">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Origen</th>
-        <th>Destino</th>
-        <th>Estado</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo</th>
+        <th>FechaHora</th>
+        <th>InicioHora</th>
+        <th>FinHoras</th>
+        <th>Lugares</th>
+        <th>Responsable</th>
+        <th>Pasajeros</th>
         <th>Precio</th>
-        <th>Acciones</th>
+        <th>Conductor</th>
+        <th>Placa</th>
+        <th>Estado</th>
       </tr>
     </thead>
     <tbody>
@@ -54,30 +61,43 @@
           <td>${row.Destino}</td>
           <td>${row.Estado}</td>
           <td>${row.Precio}</td>
+          <td>${row.Nombre}</td>
+          <td>${row.Apellido}</td>
+          <td>${row.Correo}</td>
+          <td>${row.FechaHora}</td>
+          <td>${row.InicioHora}</td>
+          <td>${row.FinHoras}</td>
+          <td>${row.Lugares}</td>
+          <td>${row.Responsable}</td>
+          <td>${row.Pasajeros}</td>
+          <td>${row.Precio}</td>
+          <td>${row.Conductor}</td>
+          <td>${row.Placa}</td>
+           <td>${row.Estado}</td>
           <td>
-            <button onclick="showUpdateForm(${row.row},'${row.ID}','${row.Origen}','${row.Destino}','${row.Estado}','${row.Precio}')">Actualizar</button>
+            <button onclick="showUpdateForm(${row.row},'${row.ID}','${row.Origen}','${row.Destino}','${row.Estado}','${row.Precio}','${row.Nombre}','${row.Apellido}','${row.Correo}','${row.FechaHora}','${row.InicioHora}','${row.FinHoras}',${row.Lugares}','${row.Responsable}','${row.Pasajeros}','${row.Precio}','${row.Conductor}','${row.Placa}')">Actualizar</button>            
           </td>
         `;
         tableBody.appendChild(tr);
       });
     }
 
-    function showUpdateForm(row, id, origen, destino, estado, precio) {
-      const newEstado = prompt('Nuevo estado:', estado);
-      const newPrecio = prompt('Nuevo precio:', precio);
+    function showUpdateForm(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
+      const newEstado = prompt('Nuevo estado:', Estado);
+      const newPrecio = prompt('Nuevo precio:', Precio);
 
       if (newEstado !== null && newPrecio !== null) {
-        updateData(row, id, origen, destino, newEstado, newPrecio);
+        updateData(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, newPrecio, Conductor, Placa, newEstado);
       }
     }
 
-    function updateData(row, id, origen, destino, estado, precio) {
+    function updateData(row, Nombre, Apellido, Correo, FechaHora, InicioHora, FinHoras, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ row: row, id:id, origen: origen, destino: destino, estado: estado, precio: precio }),
+        body: JSON.stringify({ row: row, Nombre:Nombre, Apellido:Apellido, Correo:Correo, FechaHora:FechaHora, InicioHora:InicioHora, FinHoras:FinHoras, Lugares:Lugares, Responsable:Responsable, Pasajeros:Pasajeros, Precio:Precio, Conductor:Conductor, Placa:Placa, Estado:Estado}),
       })
         .then(response => response.json())
         .then(data => {
