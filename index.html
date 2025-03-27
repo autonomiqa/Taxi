@@ -15,7 +15,7 @@
   </style>
 </head>
 <body>
-  <h1>Lista de Carreras 3</h1>
+  <h1>Lista de Carreras 4</h1>
   <table id="carrerasTable">
     <thead>
       <tr>
@@ -94,7 +94,11 @@
         mode: cors,
         headers: {
           'Content-Type': 'application/json',
+          headers["Access-Control-Allow-Origin"] = "*"; // O especifica el dominio exacto
+          headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE";
+          headers["Access-Control-Allow-Headers"] = "Content-Type";
         },
+
         body: JSON.stringify({ row: row, Nombre:Nombre, Apellido:Apellido, Correo:Correo, Fecha:Fecha, HoraInicio:HoraInicio, HoraFin:HoraFin, Horas:Horas, Lugares:Lugares, Responsable:Responsable, Pasajeros:Pasajeros, Precio:Precio, Conductor:Conductor, Placa:Placa, Estado:Estado}),
       })
         .then(response => response.json())
