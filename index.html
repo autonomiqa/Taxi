@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-  <h1>Lista de Carreras 5 Claude</h1>
+  <h1>Lista de Carreras 6</h1>
   <table id="carrerasTable">
     <thead>
       <tr>
@@ -49,7 +49,7 @@
 
   <script>
     // URL del script de Google Apps Script desplegado
-    const API_URL = 'https://script.google.com/macros/s/AKfycbycJ0XEoqaqvsoOdaFQDizRgbh6vItHB4-jhuloFevq1XEeLs0j46NB1KLn2mFv2CQxsA/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxHjEgQ-x8wQSGSfOX78UJtBjtpBVtJCOdo2y7baZTF9bHQX7sfGPUEux7Vy_7eNqUF3w/exec';
 
     // Función para obtener los datos
     function fetchData() {
@@ -130,7 +130,11 @@
       fetch(API_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json';
+          headers["Access-Control-Allow-Origin"] = "*"; // O especifica el dominio exacto
+          headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE";
+          headers["Access-Control-Allow-Headers"] = "Content-Type";
+
         },
         body: JSON.stringify({ 
           rowIndex: rowIndex,
