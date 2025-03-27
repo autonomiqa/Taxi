@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Carreras de Taxi</title>
+  <meta charset="UTF-8">
   <style>
     table {
       width: 100%;
@@ -12,10 +13,15 @@
       padding: 8px;
       text-align: left;
     }
+    .update-btn {
+      padding: 5px 10px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h1>Lista de Carreras 4</h1>
+  <h1>Lista de Carreras 5 Claude</h1>
   <table id="carrerasTable">
     <thead>
       <tr>
@@ -33,85 +39,135 @@
         <th>Conductor</th>
         <th>Placa</th>
         <th>Estado</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      </tbody>
+      <!-- Los datos se cargarán aquí dinámicamente -->
+    </tbody>
   </table>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbycJ0XEoqaqvsoOdaFQDizRgbh6vItHB4-jhuloFevq1XEeLs0j46NB1KLn2mFv2CQxsA/exec'; // Reemplaza con la URL de tu API
+    // URL del script de Google Apps Script desplegado
+    const API_URL = 'https://script.google.com/macros/s/AKfycbycJ0XEoqaqvsoOdaFQDizRgbh6vItHB4-jhuloFevq1XEeLs0j46NB1KLn2mFv2CQxsA/exec';
 
+    // Función para obtener los datos
     function fetchData() {
       fetch(API_URL)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
         .then(data => {
           populateTable(data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          alert('No se pudieron cargar los datos. Por favor, revise la consola para más detalles.');
         });
     }
 
+    // Función para poblar la tabla
     function populateTable(data) {
       const tableBody = document.querySelector('#carrerasTable tbody');
       tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
-      data.forEach(row => {
+      data.forEach((row, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${row.Nombre}</td>
-          <td>${row.Apellido}</td>
-          <td>${row.Correo}</td>
-          <td>${row.Fecha}</td>
-          <td>${row.HoraInicio}</td>
-          <td>${row.HoraFin}</td>
-          <td>${row.Horas}</td>
-          <td>${row.Lugares}</td>
-          <td>${row.Responsable}</td>
-          <td>${row.Pasajeros}</td>
-          <td>${row.Precio}</td>
-          <td>${row.Conductor}</td>
-          <td>${row.Placa}</td>
-          <td>${row.Estado}</td>
+          <td>${row.Nombre || ''}</td>
+          <td>${row.Apellido || ''}</td>
+          <td>${row.Correo || ''}</td>
+          <td>${row.Fecha || ''}</td>
+          <td>${row.HoraInicio || ''}</td>
+          <td>${row.HoraFin || ''}</td>
+          <td>${row.Horas || ''}</td>
+          <td>${row.Lugares || ''}</td>
+          <td>${row.Responsable || ''}</td>
+          <td>${row.Pasajeros || ''}</td>
+          <td>${row.Precio || ''}</td>
+          <td>${row.Conductor || ''}</td>
+          <td>${row.Placa || ''}</td>
+          <td>${row.Estado || ''}</td>
           <td>
-            <button onclick="showUpdateForm(${row.row},'${row.Nombre}','${row.Apellido}','${row.Correo}','${row.Fecha}','${row.HoraInicio}','${row.HoraFin}','${row.Horas}',${row.Lugares}','${row.Responsable}','${row.Pasajeros}','${row.Precio}','${row.Conductor}','${row.Placa}','${row.Estado}')">Actualizar</button>            
+            <button class="update-btn" onclick="showUpdateForm(
+              ${index}, 
+              '${row.Nombre || ''}', 
+              '${row.Apellido || ''}', 
+              '${row.Correo || ''}', 
+              '${row.Fecha || ''}', 
+              '${row.HoraInicio || ''}', 
+              '${row.HoraFin || ''}', 
+              '${row.Horas || ''}', 
+              '${row.Lugares || ''}', 
+              '${row.Responsable || ''}', 
+              '${row.Pasajeros || ''}', 
+              '${row.Precio || ''}', 
+              '${row.Conductor || ''}', 
+              '${row.Placa || ''}', 
+              '${row.Estado || ''}'
+            )">Actualizar</button>
           </td>
         `;
         tableBody.appendChild(tr);
       });
     }
 
-    function showUpdateForm(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
+    // Función para mostrar el formulario de actualización
+    function showUpdateForm(rowIndex, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       const newEstado = prompt('Nuevo estado:', Estado);
       const newPrecio = prompt('Nuevo precio:', Precio);
 
       if (newEstado !== null && newPrecio !== null) {
-        updateData(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, newPrecio, Conductor, Placa, newEstado);
+        updateData(rowIndex, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, newPrecio, Conductor, Placa, newEstado);
       }
     }
 
-    function updateData(row, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
+    // Función para actualizar los datos
+    function updateData(rowIndex, Nombre, Apellido, Correo, Fecha, HoraInicio, HoraFin, Horas, Lugares, Responsable, Pasajeros, Precio, Conductor, Placa, Estado) {
       fetch(API_URL, {
         method: 'POST',
-        mode: cors,
         headers: {
-          'Content-Type': 'application/json',
-          headers["Access-Control-Allow-Origin"] = "*"; // O especifica el dominio exacto
-          headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE";
-          headers["Access-Control-Allow-Headers"] = "Content-Type";
+          'Content-Type': 'application/json'
         },
-
-        body: JSON.stringify({ row: row, Nombre:Nombre, Apellido:Apellido, Correo:Correo, Fecha:Fecha, HoraInicio:HoraInicio, HoraFin:HoraFin, Horas:Horas, Lugares:Lugares, Responsable:Responsable, Pasajeros:Pasajeros, Precio:Precio, Conductor:Conductor, Placa:Placa, Estado:Estado}),
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-          fetchData(); // Recargar los datos después de la actualización
+        body: JSON.stringify({ 
+          rowIndex: rowIndex,
+          Nombre: Nombre, 
+          Apellido: Apellido, 
+          Correo: Correo, 
+          Fecha: Fecha, 
+          HoraInicio: HoraInicio, 
+          HoraFin: HoraFin, 
+          Horas: Horas, 
+          Lugares: Lugares, 
+          Responsable: Responsable, 
+          Pasajeros: Pasajeros, 
+          Precio: Precio, 
+          Conductor: Conductor, 
+          Placa: Placa, 
+          Estado: Estado
         })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        fetchData(); // Recargar los datos después de la actualización
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('No se pudo actualizar el registro. Por favor, revise la consola para más detalles.');
+      });
     }
 
-    fetchData(); // Cargar los datos al cargar la página
+    // Cargar los datos al iniciar la página
+    fetchData();
   </script>
 </body>
 </html>
